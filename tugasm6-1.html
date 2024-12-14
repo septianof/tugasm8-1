@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Form Pemesanan</title>
+  <script src="jquery-3.7.1.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f4ff;
+      padding: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .form-container {
+      background-color: #dce6ff;
+      padding: 15px;
+      border-radius: 10px;
+      max-width: 500px; /* Disesuaikan untuk laptop */
+      width: 100%;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+    .form-container h2 {
+      text-align: center;
+      font-size: 20px;
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 12px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+    input[type="checkbox"] {
+      width: auto;
+      margin-right: 5px;
+    }
+    .button-group {
+      display: flex;
+      justify-content: space-between;
+    }
+    button {
+      width: 48%;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    #totalBayar {
+      font-weight: bold;
+      background-color: #fff;
+      padding: 8px;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+
+<div class="form-container">
+  <h2>Form Pemesanan</h2>
+  <form id="formPemesanan">
+    <label>ID Pemesanan: <input type="text" id="idPemesanan" value="1" readonly></label>
+    <label>Nama Pemesan: <input type="text" id="namaPemesan"></label>
+    <label>Jenis Kelamin:
+      <select id="jenisKelamin">
+        <option value="">--Pilih--</option>
+        <option value="Laki-Laki">Laki-Laki</option>
+        <option value="Perempuan">Perempuan</option>
+      </select>
+    </label>
+    <label>Nomor Identitas: <input type="text" id="nomorIdentitas"></label>
+    <label>Tanggal Pesan: <input type="date" id="tanggalPesan"></label>
+    <label>Tipe Kamar:
+      <select id="tipeKamar">
+        <option value="">--Pilih--</option>
+        <option value="Standard" data-harga="500000">Standard</option>
+        <option value="Deluxe" data-harga="700000">Deluxe</option>
+        <option value="Family" data-harga="1000000">Family</option>
+      </select>
+    </label>
+    <label>Durasi Menginap (hari): <input type="text" id="durasiMenginap"></label>
+    <label>
+      <input type="checkbox" id="includeBreakfast"> Termasuk Breakfast
+    </label>
+    <label>Total Bayar: <input type="text" id="totalBayar" readonly></label>
+    <div class="button-group">
+      <button type="button" id="hitungTotal">Hitung Total Bayar</button>
+      <button type="button" id="simpan">Simpan</button>
+    </div>
+  </form>
+</div>
+
+<script>
+  $(document).ready(function () {
+    $('#hitungTotal').on('click', function () {
+      const tipeKamar = $('#tipeKamar').val();
+      const hargaKamar = parseInt($('#tipeKamar option:selected').data('harga')) || 0;
+      const durasiMenginap = parseInt($('#durasiMenginap').val()) || 0;
+      const includeBreakfast = $('#includeBreakfast').is(':checked');
+
+      if (!tipeKamar || durasiMenginap <= 0) {
+        alert("Pilih tipe kamar dan durasi menginap dengan benar!");
+        return;
+      }
+      let totalBayar = hargaKamar * durasiMenginap;
+      if (durasiMenginap > 3) {
+        totalBayar *= 0.9;
+      }
+      if (includeBreakfast) {
+        totalBayar += 80000;
+      }
+      $('#totalBayar').val(`Rp ${totalBayar.toLocaleString()}`);
+    });
+    $('#simpan').on('click', function () {
+      const idPemesanan = $('#idPemesanan').val();
+      const namaPemesan = $('#namaPemesan').val();
+      const jenisKelamin = $('#jenisKelamin').val();
+      const nomorIdentitas = $('#nomorIdentitas').val();
+      const tanggalPesan = $('#tanggalPesan').val();
+      const tipeKamar = $('#tipeKamar').val();
+      const durasiMenginap = $('#durasiMenginap').val();
+      const includeBreakfast = $('#includeBreakfast').is(':checked');
+      const totalBayar = $('#totalBayar').val();
+      if (!namaPemesan || !jenisKelamin || !nomorIdentitas.match(/^\d{16}$/) || !tipeKamar || !durasiMenginap) {
+        alert("Pastikan semua data diisi dengan benar!");
+        return;
+      }
+      alert(`
+        Resume Pemesanan:
+        ID Pemesanan: ${idPemesanan}
+        Nama Pemesan: ${namaPemesan}
+        Nomor Identitas: ${nomorIdentitas}
+        Jenis Kelamin: ${jenisKelamin}
+        Tanggal Pesan: ${tanggalPesan}
+        Tipe Kamar: ${tipeKamar}
+        Durasi Menginap: ${durasiMenginap} hari
+        Termasuk Breakfast: ${includeBreakfast ? "Ya" : "Tidak"}
+        Total Bayar: ${totalBayar}
+      `);
+    });
+  });
+</script>
+</body>
+</html>

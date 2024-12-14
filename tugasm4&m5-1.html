@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Pemesanan</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f4f6;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        h2 {
+            text-align: center;
+            color: #007BFF;
+            margin-bottom: 20px;
+        }
+
+        #form-pemesanan {
+            max-width: 500px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        input[type="checkbox"] {
+            margin-right: 5px;
+        }
+
+        button {
+            display: inline-block;
+            background: #007BFF;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            margin-right: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        #output {
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #eaf4fe;
+            border-radius: 8px;
+            border: 1px solid #b3d7ff;
+        }
+
+        #output h3 {
+            color: #0056b3;
+            text-align: center;
+        }
+
+        p {
+            margin: 5px 0;
+        }
+
+        .required:after {
+            content: " *";
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h2>Form Pemesanan</h2>
+    <form id="form-pemesanan">
+        <label class="required">Nama Pemesan:</label>
+        <input type="text" id="nama-pemesan" required>
+
+        <label class="required">Jenis Kelamin:</label>
+        <select id="jenis-kelamin" required>
+            <option value="Laki-Laki">Laki-Laki</option>
+            <option value="Perempuan">Perempuan</option>
+        </select>
+
+        <label class="required">Nomor Identitas:</label>
+        <input type="text" id="nomor-identitas" required>
+
+        <label class="required">Tipe Kamar:</label>
+        <select id="tipe-kamar" required>
+            <option value="Standard" data-harga="300000">Standard</option>
+            <option value="Deluxe" data-harga="500000">Deluxe</option>
+            <option value="Family" data-harga="700000">Family</option>
+        </select>
+
+        <label class="required">Tanggal Pesan:</label>
+        <input type="date" id="tanggal-pesan" required>
+
+        <label class="required">Durasi Menginap (Hari):</label>
+        <input type="number" id="durasi-menginap" required>
+
+        <label>Termasuk Breakfast:</label>
+        <input type="checkbox" id="termasuk-breakfast"> Ya
+
+        <label>Total Bayar:</label>
+        <input type="text" id="total-bayar" readonly>
+
+        <button type="button" id="hitung-total">Hitung Total</button>
+        <button type="button" id="simpan">Simpan</button>
+    </form>
+
+    <div id="output" style="display: none;"></div>
+
+    <script>
+        $(document).ready(function () {
+            $('#hitung-total').click(function () {
+                const nomorIdentitas = $('#nomor-identitas').val();
+                if (!/^\d{16}$/.test(nomorIdentitas)) {
+                    alert('Nomor Identitas harus 16 digit angka.');
+                    return;
+                }
+
+                const durasiMenginap = parseInt($('#durasi-menginap').val());
+                if (isNaN(durasiMenginap) || durasiMenginap <= 0) {
+                    alert('Durasi menginap harus berupa angka positif.');
+                    return;
+                }
+
+                const tipeKamar = $('#tipe-kamar option:selected');
+                let hargaKamar = parseInt(tipeKamar.data('harga')) * durasiMenginap;
+
+                if (durasiMenginap >= 3) {
+                    hargaKamar *= 0.9;
+                }
+
+                if ($('#termasuk-breakfast').is(':checked')) {
+                    hargaKamar += 80000;
+                }
+
+                $('#total-bayar').val(hargaKamar.toFixed(2));
+            });
+
+            $('#simpan').click(function () {
+                const namaPemesan = $('#nama-pemesan').val();
+                const jenisKelamin = $('#jenis-kelamin').val();
+                const nomorIdentitas = $('#nomor-identitas').val();
+                const tipeKamar = $('#tipe-kamar').val();
+                const durasiMenginap = $('#durasi-menginap').val();
+                const totalBayar = $('#total-bayar').val();
+                const breakfast = $('#termasuk-breakfast').is(':checked') ? 'Ya' : 'Tidak';
+
+                if (!totalBayar || parseFloat(totalBayar) === 0) {
+                    alert('Silakan hitung total terlebih dahulu.');
+                    return;
+                }
+
+                $('#output').html(`
+                    <h3>Resume Pemesanan</h3>
+                    <p>Nama Pemesan: ${namaPemesan}</p>
+                    <p>Jenis Kelamin: ${jenisKelamin}</p>
+                    <p>Nomor Identitas: ${nomorIdentitas}</p>
+                    <p>Tipe Kamar: ${tipeKamar}</p>
+                    <p>Durasi Menginap: ${durasiMenginap} hari</p>
+                    <p>Termasuk Breakfast: ${breakfast}</p>
+                    <p>Total Bayar: Rp ${totalBayar}</p>
+                `).fadeIn();
+            });
+        });
+    </script>
+</body>
+</html>

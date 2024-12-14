@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Fasilitas</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .form-container {
+            width: 480px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-container h2 {
+            text-align: center;
+            color: #4a90e2;
+            margin-bottom: 30px;
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="number"],
+        .form-group input[type="time"] {
+            width: 100%;
+            padding: 12px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 16px;
+            background-color: #f5f5f5;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input[type="text"]:focus,
+        .form-group input[type="number"]:focus,
+        .form-group input[type="time"]:focus {
+            border-color: #4a90e2;
+            outline: none;
+        }
+
+        .form-group .btn-group {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .btn-group button {
+            width: 48%;
+            padding: 12px;
+            border: none;
+            color: #fff;
+            font-size: 16px;
+            background-color: #4a90e2;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-group button:hover {
+            background-color: #357ab7;
+        }
+
+        .btn-group button[type="reset"] {
+            background-color: #f26c4f;
+        }
+
+        .btn-group button[type="reset"]:hover {
+            background-color: #e55b3d;
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h2>Data Fasilitas</h2>
+    <form>
+        <div class="form-group">
+            <label for="id_fasilitas">ID</label>
+            <input type="text" id="id_fasilitas" name="id_fasilitas">
+        </div>
+        <div class="form-group">
+            <label for="nama">Nama</label>
+            <input type="text" id="nama" name="nama">
+        </div>
+        <div class="form-group">
+            <label for="fasilitas">Fasilitas</label>
+            <input type="text" id="fasilitas" name="fasilitas">
+        </div>
+        <div class="form-group">
+            <label for="harga_weekend">Harga Weekend</label>
+            <input type="number" id="harga_weekend" name="harga_weekend">
+        </div>
+        <div class="form-group">
+            <label for="harga_weekday">Harga Weekday</label>
+            <input type="number" id="harga_weekday" name="harga_weekday">
+        </div>
+        <div class="form-group">
+            <label for="kuota">Kuota</label>
+            <input type="number" id="kuota" name="kuota">
+        </div>
+        <div class="form-group">
+            <label for="jam_buka">Jam Buka</label>
+            <input type="time" id="jam_buka" name="jam_buka">
+        </div>
+        <div class="form-group">
+            <label for="jam_tutup">Jam Tutup</label>
+            <input type="time" id="jam_tutup" name="jam_tutup">
+        </div>
+        <div class="form-group btn-group">
+            <button type="submit">Simpan</button>
+            <button type="reset">Reset</button>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>
